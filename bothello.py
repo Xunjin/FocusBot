@@ -1,30 +1,36 @@
-from os import environ
-
-import discord
-from discord.ext import commands
-
 import utils
+import discord
+
+from os import environ
+from os import listdir
+from discord.ext import commands
 
 
 token_bot = environ.get('BOT')
-client = discord.Client()
+
+client = commands.Bot(command_prefix='!')
 
 
-@client.event
-async def on_ready():
-    print(f'We have looged in as {client.user}')
-    await utils.set_presence(client)
+@client.command()
+async def load(ctx, extension):
+    client.load_extension(f'cogs.{extension}')
 
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+@client.command()
+async def unload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
 
-    print(f'[MESSAGE]: [{message.author}] - {message.content}')
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('fuck you')
+@client.command()
+async def reload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
+    client.load_extension(f'cogs.{extension}')
+
+
+for filename in listdir('./cogs'):
+    if filename.endswith('.py'):
+        client.load_extension(f'cogs.{filename[:-3]}')
+        print(f'cogs.{filename[:-3]}')
 
 
 client.run(token_bot)
