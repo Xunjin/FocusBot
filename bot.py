@@ -32,11 +32,17 @@ async def reload(ctx, extension):
     client.load_extension(f'cogs.{extension}')
 
 
-# Initialize Cogs
-for filename in listdir('./cogs'):
+# Initialize Events
+for filename in listdir('./cogs/events/'):
     if filename.endswith('.py'):
         print(f'[LOADING EXT] - {filename[:-3]}')
-        client.load_extension(f'cogs.{filename[:-3]}')
+        client.load_extension(f'cogs.events.{filename[:-3]}')
+
+# Initialize Commands
+for filename in listdir('./cogs/commands/'):
+    if filename.endswith('.py'):
+        print(f'[LOADING EXT] - {filename[:-3]}')
+        client.load_extension(f'cogs.commands.{filename[:-3]}')
 
 
 client.run(token_bot)

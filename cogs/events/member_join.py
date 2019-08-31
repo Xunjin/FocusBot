@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class Greetings(commands.Cog):
+class MemberJoin(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -13,4 +13,4 @@ class Greetings(commands.Cog):
         print(f'[MEMBER JOINED] - {member}')
 
 def setup(client):
-    client.add_cog(Greetings(client))
+    client.add_cog(MemberJoin(client))
